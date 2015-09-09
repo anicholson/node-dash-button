@@ -58,7 +58,7 @@ var register = function(mac_address) {
             if(!just_emitted && 
                 _.isEqual(packet.payload.payload.sender_ha.addr, 
                          hex_to_int_array(mac_address))) {
-                readStream.emit('detected');
+                readStream.emit('detected', mac_address);
                 just_emitted = true;
                 setTimeout(function () { just_emitted = false; }, 3000);
             }
