@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Node Dash Button by hortinstein</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Node Dash Button</h1>
+        <h2>A small module to emit events whe an Amazon Dash Button is pressed</h2>
+        <a href="https://github.com/hortinstein/node-dash-button" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h3>
+<a id="place-it-hack-it-press-it-get-it" class="anchor" href="#place-it-hack-it-press-it-get-it" aria-hidden="true"><span class="octicon octicon-link"></span></a>Place it. <em>Hack it.</em> Press it. <del>Get it.</del>
+</h3>
+
+<p><img src="http://i.imgur.com/PP0CJ3s.png?1" alt="">
+Node Dash Button is a simple library that will allow you to utilize a dash button to emit an event.  I am using the same strategy of watching for dash generated ARP requests as the article below.</p>
+
+<p>This module was inspired by <a href="https://medium.com/@edwardbenson/how-i-hacked-amazon-s-5-wifi-button-to-track-baby-data-794214b0bdd8">this fantastic article by Edward Bensen</a>.</p>
+
+<h4>
+<a id="first-time-dash-setup" class="anchor" href="#first-time-dash-setup" aria-hidden="true"><span class="octicon octicon-link"></span></a>First Time Dash Setup</h4>
+
+<p>Follow Amazon's instructions to configure your button to send messages when you push them but not actually order anything. When you get a Dash button, Amazon gives you a list of setup instructions to get going. Just follow this list of instructions, but don’t complete the final step (#3 I think) <strong>Do not select a product, just exit the app</strong>.</p>
+
+<h4>
+<a id="find-a-dash" class="anchor" href="#find-a-dash" aria-hidden="true"><span class="octicon octicon-link"></span></a>Find a Dash</h4>
+
+<p>To find a dash on your network, run the following from the node-dash-button directory in node_modules:</p>
+
+<div class="highlight highlight-source-shell"><pre><span class="pl-c"># you may need to use sudo due to libpcap running in permiscuous mode</span>
+$ <span class="pl-c1">cd</span> node_modules/node-dash-button
+$ node bin/findbutton</pre></div>
+
+<p>It will watch for new arp requests on your network.  There may be several arp requests, so press it a few times to make sure. Copy the hardware address as shown below</p>
+
+<p><img src="http://i.imgur.com/BngokPC.png" alt="hw address"></p>
+
+<h4>
+<a id="example-usage" class="anchor" href="#example-usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example Usage:</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">//warning this may trigger multiple times for one press</span>
+<span class="pl-c">//...usually triggers twice based on testing for each press</span>
+dash_button <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>node-dash-button<span class="pl-pds">'</span></span>);
+<span class="pl-k">var</span> dash <span class="pl-k">=</span> dash_button(<span class="pl-s"><span class="pl-pds">"</span>8f:3f:20:33:54:44<span class="pl-pds">"</span></span>); <span class="pl-c">//address from step above</span>
+dash.on(<span class="pl-s"><span class="pl-pds">"</span>detected<span class="pl-pds">"</span></span>, <span class="pl-k">function</span> (){
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>omg found<span class="pl-pds">"</span></span>);
+});</pre></div>
+
+<h4>
+<a id="example-projects" class="anchor" href="#example-projects" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example Projects:</h4>
+
+<p>I collected a few examples I found on github of how people are using this module, some projects are more mature than others</p>
+
+<ul>
+<li>
+<a href="https://github.com/bhberson/pizzadash">PizzaDash</a> uses a node dash to order Domino's pizza. <a href="http://www.theverge.com/2015/9/28/9407669/amazon-dash-button-hack-pizza">The Verge</a>, <a href="http://gizmodo.com/an-american-hero-hacked-an-amazon-dash-button-to-order-1733347471">Gizmodo</a> and <a href="http://www.grubstreet.com/2015/09/amazon-dash-button-dominos-hack.html#">Grubstreet</a>  did short writeups on the PizzaDash project].<br>
+</li>
+<li>
+<a href="https://github.com/danboy/dashgong">dashgong</a> uses the node dash to send a message to slack</li>
+<li>
+<a href="https://github.com/dkordik/dash-listener">dash-listener</a> performs various home automation tasks like adjusting lights and interacting with a music player</li>
+<li>
+<a href="https://github.com/djrausch/Nest-Dash">Nest-Dash</a> toggles the Nest setting from away to home via Amazon Dash Button</li>
+<li>
+<a href="https://github.com/Sfeinste/dash-hipchat-doorbell">dash-hipchat-doorbell</a> quick and dirty node app that intercepts traffic from an amazon dash button and creates a hipchat notification (think doorbell)</li>
+<li>
+<a href="https://github.com/sidho/netflixandchill">netflixandchill</a> button to netflix and chill, dims the lights (no interface with netflix yet)</li>
+<li>
+<a href="https://github.com/girliemac/dash-rickroll/blob/8f0396c7fec871427fe016a2dd5787f07b1402cc/README.md">dash-rickroll</a> title explains it all </li>
+</ul>
+
+<h3>
+<a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+
+<p>Author Alex Hortin(<a href="https://github.com/hortinstein" class="user-mention">@hortinstein</a>)</p>
+
+<p>Contributor Dan Kordik (<a href="https://github.com/dkordik" class="user-mention">@dkordik</a>)</p>
+
+<h3>
+<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+
+<p>Having trouble with Pages? Check out the <a href="https://github.com/hortinstein/node-dash-button">source</a> and open an issue. </p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/hortinstein/node-dash-button/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/hortinstein/node-dash-button/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/hortinstein/node-dash-button"></a> is maintained by <a href="https://github.com/hortinstein">hortinstein</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
